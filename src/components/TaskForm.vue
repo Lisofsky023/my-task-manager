@@ -16,7 +16,7 @@ export default {
     default: ''
   },
   initialTaskId: {
-    type: Number,
+    type: [Number, String],
     default: null
   }
   },
