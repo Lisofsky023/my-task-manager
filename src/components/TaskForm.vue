@@ -56,7 +56,8 @@ export default {
         text: taskText.value, 
         id: taskId.value, 
         category: taskCategory.value, 
-        priority: taskPriority.value });
+        priority: taskPriority.value,
+       });
       taskText.value = '';
       taskId.value = null;
       taskCategory.value = 'Personal';

@@ -1,6 +1,7 @@
 <template>
   <div>
     <task-form @submit-task="handleTaskSubmit" />
+    <input v-model="searchQuery" placeholder="Search tasks" type="text" class="search-input" />
     <div class="category-filters">
       <button @click="setFilterCategory('All')">All</button>
       <button @click="setFilterCategory('Personal')">Personal</button>
@@ -14,14 +15,10 @@
     </div>
     <ul class="list">
       <li class="item" v-for="task in filteredTasks" :key="task.id">
-        
         <input type="checkbox" v-model="task.isCompleted" @click="() => toggleTaskCompletion(task.id)">
-
         <span :class="{ completed: task.isCompleted }">{{ task.text }}</span>
         <span class="priority" :class="task.priority">{{ task.priority }}</span>
         <span class="category">{{ task.category }}</span>
-        
-        
         <button class="edit-button" @click="() => setCurrentEditIndex(task.id)">Edit</button>
         <button class="delete-button" @click="() => deleteTask(task.id)">Delete</button>
         <div v-show="currentEditIndex === task.id">
@@ -46,6 +43,7 @@ export default {
     const currentEditIndex = ref(null);
     const filterStatus = ref('all');
     const filterCategory = ref('All');
+    const searchQuery = ref('');
 
     const setFilter = (status) => {
       filterStatus.value = status;
@@ -61,7 +59,8 @@ export default {
                             (filterStatus.value === 'active' && !task.isCompleted) ||
                             (filterStatus.value === 'completed' && task.isCompleted);
     const categoryCondition = filterCategory.value === 'All' || task.category === filterCategory.value;
-    return statusCondition && categoryCondition;
+    const matchesSearch = task.text.toLowerCase().includes(searchQuery.value.toLowerCase());
+    return statusCondition && categoryCondition && matchesSearch;
   });
 });
 
@@ -81,6 +80,7 @@ export default {
     return {
       filteredTasks,
       currentEditIndex,
+      searchQuery,
       setFilterCategory,
       handleTaskSubmit,
       deleteTask,
@@ -93,6 +93,14 @@ export default {
 </script>
 
 <style>
+
+.search-input {
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .filters button {
   margin-right: 5px;
 }
