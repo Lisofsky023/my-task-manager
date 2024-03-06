@@ -1,16 +1,19 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <header>
+      <h1>My Task Manager</h1>
+      <nav>
+        <router-link to="/">Home</router-link> | 
+        <router-link to="/tasks">Tasks</router-link>
+      </nav>
+    </header>
+    <router-view />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
 }
 </script>
 
@@ -22,5 +25,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+nav a {
+  margin: 10px;
+  text-decoration: none;
+  color: #42b983;
 }
 </style>
