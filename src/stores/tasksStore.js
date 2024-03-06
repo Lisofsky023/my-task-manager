@@ -6,8 +6,15 @@ export const useTasksStore = defineStore('tasks', {
     tasks: [],
   }),
   actions: {
-    addTask(newTaskText) {
-      this.tasks.push({ text: newTaskText, id: crypto.randomUUID(), isCompleted: false });
+    addTask(newTaskText, category, priority) {
+      console.log(`Adding task with priority: ${priority}`);
+      this.tasks.push({ 
+        text: newTaskText, 
+        id: crypto.randomUUID(), 
+        isCompleted: false,
+        category: category || 'General',
+        priority: priority,
+      });
     },
     deleteTask(taskId) {
       const index = this.tasks.findIndex(task => task.id === taskId);
