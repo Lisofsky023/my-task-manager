@@ -4,17 +4,16 @@
     <input v-model="searchQuery" placeholder="Search tasks" type="text" class="search-input" />
     <task-filters @set-category="setFilterCategory" @set-status="setFilter"></task-filters>
     <ul class="list">
-      <li class="item" v-for="task in filteredTasks" :key="task.id">
-        <input type="checkbox" v-model="task.isCompleted" @click="() => toggleTaskCompletion(task.id)">
-        <span :class="{ completed: task.isCompleted }">{{ task.text }}</span>
-        <span class="priority" :class="task.priority">{{ task.priority }}</span>
-        <span class="category">{{ task.category }}</span>
-        <button class="edit-button" @click="() => setCurrentEditIndex(task.id)">Edit</button>
-        <button class="delete-button" @click="() => deleteTask(task.id)">Delete</button>
-        <div v-show="currentEditIndex === task.id">
-          <task-form :initialTask="task.text" :initialTaskId="task.id" @submit-task="handleTaskSubmit" />
-        </div>
-      </li>
+      <task-item 
+        v-for="task in filteredTasks" 
+        :key="task.id"
+        :task="task"
+        :isEditing="currentEditIndex === task.id"
+        @set-edit="setCurrentEditIndex"
+        @delete-task="deleteTask"
+        @toggle-completion="toggleTaskCompletion"
+        @submit-edit="handleTaskSubmit"
+      ></task-item>
     </ul>
   </div>
 </template>
@@ -24,11 +23,13 @@ import { computed, ref } from 'vue';
 import TaskForm from '@/components/TaskForm.vue';
 import TaskFilters from '@/components/TaskFilters.vue';
 import { useTasksStore } from '@/stores/tasksStore';
+import TaskItem from '@/components/TaskItem.vue';
 
 export default {
   components: {
     TaskForm,
     TaskFilters,
+    TaskItem,
   },
   setup() {
     const { tasks, addTask, deleteTask, editTask, toggleTaskCompletion } = useTasksStore();
@@ -56,7 +57,7 @@ export default {
   });
 });
 
-    const handleTaskSubmit = ({ text, id, category, priority }) => {
+const handleTaskSubmit = ({ text, id, category, priority }) => {
       if (id !== null) {
         editTask(id, text, category, priority);
       } else {
