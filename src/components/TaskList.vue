@@ -51,7 +51,7 @@ export default {
                             (filterStatus.value === 'active' && !task.isCompleted) ||
                             (filterStatus.value === 'completed' && task.isCompleted);
     const categoryCondition = filterCategory.value === 'All' || task.category === filterCategory.value;
-    const matchesSearch = task.text.toLowerCase().includes(searchQuery.value.toLowerCase());
+    const matchesSearch = task.text && typeof task.text === 'string' && task.text.toLowerCase().includes(searchQuery.value.toLowerCase());
     return statusCondition && categoryCondition && matchesSearch;
   });
 });
