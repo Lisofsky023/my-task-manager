@@ -2,17 +2,7 @@
   <div>
     <task-form @submit-task="handleTaskSubmit" />
     <input v-model="searchQuery" placeholder="Search tasks" type="text" class="search-input" />
-    <div class="category-filters">
-      <button @click="setFilterCategory('All')">All</button>
-      <button @click="setFilterCategory('Personal')">Personal</button>
-      <button @click="setFilterCategory('Work')">Work</button>
-      <button @click="setFilterCategory('Other')">Other</button>
-    </div>
-    <div class="filters">
-      <button @click="setFilter('all')">All</button>
-      <button @click="setFilter('active')">Active</button>
-      <button @click="setFilter('completed')">Completed</button>
-    </div>
+    <task-filters @set-category="setFilterCategory" @set-status="setFilter"></task-filters>
     <ul class="list">
       <li class="item" v-for="task in filteredTasks" :key="task.id">
         <input type="checkbox" v-model="task.isCompleted" @click="() => toggleTaskCompletion(task.id)">
@@ -32,11 +22,13 @@
 <script>
 import { computed, ref } from 'vue';
 import TaskForm from '@/components/TaskForm.vue';
+import TaskFilters from '@/components/TaskFilters.vue';
 import { useTasksStore } from '@/stores/tasksStore';
 
 export default {
   components: {
     TaskForm,
+    TaskFilters,
   },
   setup() {
     const { tasks, addTask, deleteTask, editTask, toggleTaskCompletion } = useTasksStore();
