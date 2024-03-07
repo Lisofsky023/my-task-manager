@@ -1,6 +1,6 @@
 <template>
   <div>
-    <task-form @submit-task="handleTaskSubmit" />
+    <task-add-form @task-added="refreshTasks" />
     <input v-model="searchQuery" placeholder="Search tasks" type="text" class="search-input" />
     <task-filters @set-category="setFilterCategory" @set-status="setFilter"></task-filters>
     <ul class="list">
@@ -20,14 +20,14 @@
 
 <script>
 import { computed, ref } from 'vue';
-import TaskForm from '@/components/TaskForm.vue';
+import TaskAddForm from '@/components/TaskAddForm.vue';
 import TaskFilters from '@/components/TaskFilters.vue';
 import { useTasksStore } from '@/stores/tasksStore';
 import TaskItem from '@/components/TaskItem.vue';
 
 export default {
   components: {
-    TaskForm,
+    TaskAddForm,
     TaskFilters,
     TaskItem,
   },
@@ -79,7 +79,7 @@ const handleTaskSubmit = ({ text, id, category, priority }) => {
       deleteTask,
       setCurrentEditIndex,
       toggleTaskCompletion,
-      setFilter
+      setFilter,
     };
   },
 };
