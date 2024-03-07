@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { ref, watch, toRefs } from 'vue';
+import { ref, watch, watchEffect, toRefs } from 'vue';
 
 export default {
   props: {
@@ -38,6 +38,11 @@ export default {
     const taskCategory = ref('Personal');
     const taskPriority = ref('Low');
 
+    watchEffect(() => {
+      taskText.value = initialTask.value;
+      taskId.value = initialTaskId.value;
+    });
+
     watch(initialTask, (newVal) => {
       taskText.value = newVal || '';
     });
@@ -52,14 +57,13 @@ export default {
         return;
       }
       error.value = '';
-      emit('submit-task', { 
-        text: taskText.value, 
+      console.log(`Emitting task update with category ${taskCategory.value}`)
+      emit('submit-task', {
         id: taskId.value, 
+        text: taskText.value, 
         category: taskCategory.value, 
         priority: taskPriority.value,
        });
-      taskText.value = '';
-      taskId.value = null;
       taskCategory.value = 'Personal';
       taskPriority.value = 'Low';
     };

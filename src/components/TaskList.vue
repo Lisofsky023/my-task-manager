@@ -58,7 +58,7 @@ export default {
 
     const handleTaskSubmit = ({ text, id, category, priority }) => {
       if (id !== null) {
-        editTask(id, text);
+        editTask(id, text, category, priority);
       } else {
         addTask(text, category, priority);
       }
