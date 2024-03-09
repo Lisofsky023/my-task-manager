@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <h1>Tasks</h1>
     <task-list></task-list>
   </div>
@@ -16,5 +16,10 @@ export default {
 </script>
 
 <style>
+ .wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+ }
+
 
 </style>
